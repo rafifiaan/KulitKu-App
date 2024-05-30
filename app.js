@@ -6,11 +6,13 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 
 const userRouter = require('./src/users/users.router.js');
+const kulitRouter = require('./src/kulit/kulit.route.js');
 
 app.use(express.json());
 app.use(bodyParser.json());
 
 app.use('/', userRouter);
+app.use('/', kulitRouter);
 
 app.get('/' , (req , res)=>{
     res.send('hello server :)');
