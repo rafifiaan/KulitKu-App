@@ -15,9 +15,9 @@ app.use('/', userRouter);
 app.use('/', kulitRouter);
 
 app.get('/' , (req , res)=>{
-    res.send('hello server :)');
+    res.send('halo server :)');
 });
  
 app.listen(port , ()=> {
-    console.log('> Server is up and running on port : ' + port);
+    console.log('> Yeay! Server aktif dan berjalan pada port: ' + port);
 })

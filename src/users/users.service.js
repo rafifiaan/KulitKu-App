@@ -17,18 +17,15 @@ const checkUserExists = (username, email, callback) => {
 };
 
 const create = (data, callback) => {
-    // Regular expression untuk memeriksa alamat email yang berakhir dengan @gmail.com
     const gmailRegex = /@gmail\.com$/;
 
-    // Memeriksa apakah alamat email sesuai dengan format yang diinginkan
     if (!gmailRegex.test(data.email)) {
         return callback({ 
             status: 400,
-            message: 'The email address must end with @gmail.com' 
-        }, null); // Mengembalikan kesalahan ke callback tanpa hasil
+            message: 'Alamat email harus diakhiri dengan @gmail.com' 
+        }, null); 
     }
 
-    // Jika validasi lolos, melakukan query untuk menyimpan data ke dalam database
     pool.query(
         `INSERT INTO users(username, email, password) VALUES (?,?,?)`,
         [data.username, data.email, data.password],
@@ -74,10 +71,10 @@ const getUserbyEmail = async (email) => {
             [email],
             (error, results, fields) => {
                 if (error) {
-                    console.error('Error in getUserbyEmail query:', error);
+                    console.error('Kesalahan dalam kueri getUserbyEmail:', error);
                     reject(error);
                 } else {
-                    console.log('Results from getUserbyEmail:', results);
+                    console.log('Hasil dari getUserbyEmail:', results);
                     resolve(results[0]); // Assuming results is an array
                 }
             }
@@ -108,7 +105,7 @@ const deleteUser = (id_users, callback) => {
             }
             if (results.affectedRows === 0) {
                 return callback({
-                    message: 'User not found',
+                    message: 'Akun tidak ditemukan',
                     notFound: true
                 });
             }

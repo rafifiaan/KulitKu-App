@@ -5,8 +5,7 @@ const {
     getUsers, 
     updateUser, 
     deleteUser,
-    getUserbyEmail, 
-    truncateUsers
+    getUserbyEmail
 } = require('./users.service');
 
 const bcrypt = require('bcrypt');
@@ -26,21 +25,21 @@ module.exports = {
                 console.error(err);
                 return res.status(500).json({
                     error: true,
-                    message: 'Database connection error'
+                    message: 'Kesalahan koneksi basis data'
                 });
             }
     
             if (userExists.usernameExists) {
                 return res.status(400).json({
                     error: true,
-                    message: 'Username already exists'
+                    message: 'Nama pengguna sudah ada'
                 });
             }
     
             if (userExists.emailExists) {
                 return res.status(400).json({
                     error: true,
-                    message: 'Email already registered'
+                    message: 'Email sudah terdaftar'
                 });
             }
     
@@ -61,19 +60,19 @@ module.exports = {
                         console.error(err);
                         return res.status(500).json({
                             error: true,
-                            message: 'Failed to create user'
+                            message: 'Gagal membuat Akun'
                         });
                     }
                 }
                 if (results.affectedRows > 0) {
                     return res.status(200).json({
                         error: false,
-                        message: 'User Created'
+                        message: 'Akun berhasil dibuat!'
                     });
                 } else {
                     return res.status(500).json({
                         error: true,
-                        message: 'Failed to create user'
+                        message: 'Gagal membuat Akun'
                     });
                 }
             });
@@ -85,12 +84,12 @@ module.exports = {
                 console.error(err);
                 return res.status(500).json({
                     error: true,
-                    message: 'Failed to fetch users'
+                    message: 'Gagal mendapatkan data pengguna'
                 });
             }
             return res.json({
                 error: false, 
-                message: 'Users fetched successfully',
+                message: 'Berhasil mendapatkan data pengguna!',
                 listUsers: results
             });
         });
@@ -102,18 +101,18 @@ module.exports = {
                 console.error(err);
                 return res.status(500).json({
                     error: true,
-                    message: 'Failed to fetch user'
+                    message: 'Gagal mendapatkan data pengguna'
                 });
             }
             if (!results) {
                 return res.status(404).json({
                     error: true,
-                    message: 'User not found'
+                    message: 'Akun tidak ditemukan'
                 });
             }
             return res.json({
                 error: false, 
-                message: 'User found!',
+                message: 'Berhasil menemukan Akun Pengguna!',
                 dataUser: results
             });
         });
@@ -128,18 +127,18 @@ module.exports = {
                 console.error(err);
                 return res.status(500).json({
                     error: true,
-                    message: 'Failed to update user'
+                    message: 'Gagal memperbarui data pengguna'
                 });
             }
             if (results.affectedRows === 0) {
                 return res.status(404).json({
                     error: true,
-                    message: 'User not found or no changes made'
+                    message: 'Akun tidak ditemukan atau tidak ada perubahan yang dilakukan'
                 });
             }
             return res.json({
                 error: false,
-                message: 'User updated successfully'
+                message: 'Berhasil memperbarui Akun pengguna!'
             });
         });
     },    
@@ -151,17 +150,17 @@ module.exports = {
                 if (err.notFound) {
                     return res.status(404).json({
                         error: true,
-                        message: 'User not found'
+                        message: 'Akun tidak ditemukan'
                     });
                 }
                 return res.status(500).json({
                     error: true,
-                    message: 'Failed to delete user'
+                    message: 'Gagal menghapus data pengguna'
                 });
             }
             return res.json({
                 error: false,
-                message: 'User deleted successfully'
+                message: 'Berhasil menghapus Akun pengguna!'
             });
         });
     },
@@ -184,7 +183,7 @@ module.exports = {
     
                 return res.json({
                     error: false,
-                    message: 'Login successful',
+                    message: 'Selamat! Login Berhasil',
                     loginResult: {
                         userId: results.id_users,
                         name: results.username,
@@ -192,17 +191,17 @@ module.exports = {
                     }
                 });
             } else {
-                console.error('Password mismatch for user:', results.email);
+                console.error('Ketidakcocokan kata sandi untuk pengguna:', results.email);
                 return res.json({
                     error: true,
-                    message: 'Invalid email or password'
+                    message: 'Email atau kata sandi tidak valid'
                 });
             }
         } catch (error) {
-            console.error('Error in login:', error);
+            console.error('Kesalahan saat masuk:', error);
             return res.json({
                 error: 0,
-                message: 'Internal server error'
+                message: 'Kesalahan server internal'
             });
         }
     },      

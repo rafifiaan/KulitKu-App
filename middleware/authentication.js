@@ -9,7 +9,7 @@ module.exports = {
                 if(err) {
                     res.json({
                         error: true,
-                        message: 'Invalid token'
+                        message: 'Token tidak valid'
                     });
                 } else {
                     next();
@@ -18,7 +18,7 @@ module.exports = {
         }else {
             res.json({
                 error: true,
-                message: 'Access denied, unauthorized user'
+                message: 'Akses ditolak, penggunaan tidak sah'
             });
         }
     }
