@@ -14,6 +14,9 @@ app.use(bodyParser.json());
 app.use('/', userRouter);
 app.use('/', kulitRouter);
 
+// fitur scan
+
+
 app.get('/' , (req , res)=>{
     res.send('halo server :)');
 });
