@@ -28,6 +28,15 @@ const tempGCS = multer({
 
 app.post('/upload', tempGCS.single('file'), (req, res) => {
     try {
+
+        // Log request file
+        console.log('Received file:', req.file);
+
+        // Memeriksa apakah file ada
+        if (!req.file) {
+            return res.status(400).json({ message: 'Tidak ada file yang diunggah' });
+        }
+        
         // mendapatkan file dari request
         const file = req.file;
 
