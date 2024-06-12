@@ -14,11 +14,14 @@ const storage = new Storage({
     keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
 });
 const bucket = storage.bucket('kulitku-bucket');
-const tempGCS = multer({ // middleware multer
-    storage: multer.memoryStorage(), 
-});
+const tempGCS = multer({ storage: multer.memoryStorage() }); // middleware multer
 
+// keperluan konfigurasi koneksi database MySQL
+const pool = require("./config/databases.js");
+
+// keperluan pengisian data ke database
 const crypto = require('crypto');
+const moment = require('moment');
 
 // keperluan route
 const userRouter = require('./src/users/users.router.js');
@@ -52,9 +55,6 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
         const gcsFileName = 'upload/' + file.originalname;
         const gcsFile = bucket.file(gcsFileName);
 
-        // variabel penampung link object setelah upload GCS
-        let publicUrl;
-
         // membuat stream untuk penulisan file ke GCS
         console.log('Membuat stream untuk upload ke GCS...');
         const stream = gcsFile.createWriteStream({
@@ -69,13 +69,45 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
             res.status(500).json({ message: 'Kesalahan internal pada server' });
         });
 
+        // stream on finish
         stream.on('finish', async () => {
-            console.log('File di-upload ke GCS:', gcsFileName);
 
-            // Link URL gambar yang di-upload
-            publicUrl = `https://storage.googleapis.com/${bucket.name}/${gcsFileName}`;
-            console.log(publicUrl);
-            res.status(200).json({ message: 'File berhasil di-upload ke GCS' });
+            // TODO : pemanggilan ML API dan mendapatkan hasil data prediksi (menunggu konfirmasi tim ML)
+            /**
+             * 
+             */
+
+            console.log('File yang akan di-upload ke GCS:', gcsFileName);
+
+            // mempersiapkan data yang akan diisikan ke database
+            const id_scan = crypto.randomBytes(8).toString('hex');
+            const waktu_scan = moment().format('HH:mm:ss');
+            const tanggal_scan = moment().format('DD-MM-YYYY');
+            const gambar_scan_url = `https://storage.googleapis.com/${bucket.name}/${gcsFileName}`;
+            // const id_penyakit_dugaan <hasil dari resp>
+            // const persentase
+            // const user_yang_scan
+
+            // console.log(gambar_scan_url);
+
+            const query = 'INSERT INTO scan_keluhan (id_scan, waktu_scan, tanggal_scan, gambar_scan, penyakit_dugaan, persentase, user_yang_scan) VALUES (?, ?, ?, ?, ?, ?, ?)';
+            pool.query(query, [id_scan, waktu_scan, tanggal_scan, gambar_scan_url, id_penyakit_dugaan, persentase, user_yang_scan], (err, results) => {
+                if (err) {
+                    console.error('Error menyimpan data ke database:', err);
+                    return res.status(500).json({ message: 'Kesalahan menyimpan data ke database' });
+                }
+
+                if (results.affectedRows > 0) {
+                    return res.status(200).json({
+                        error: false,
+                        message: 'Data berhasil disimpan ke database'
+                    });
+                } 
+                console.log('Data berhasil disimpan ke database');
+            });
+
+            console.log('File berhasil disimpan ke GCS');
+            // res.status(200).json({ message: 'File berhasil di-upload ke GCS dan data scan disimpan ke database' });
         });
 
         console.log('Stream menyelesaikan proses...');
