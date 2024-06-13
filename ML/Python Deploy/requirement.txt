@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+google-cloud-storage
+tensorflow
+keras
+pymysql
+numpy
+Pillow
+requests
+mysqlclient
