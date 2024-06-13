@@ -72,10 +72,11 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
         // stream on finish
         stream.on('finish', async () => {
 
-            // TODO : pemanggilan ML API dan mendapatkan hasil data prediksi (menunggu konfirmasi tim ML)
-            /**
-             * 
-             */
+            // pemanggilan ML API dan mendapatkan hasil data prediksi (menunggu konfirmasi tim ML)
+            const apiUrl = process.env.API_PREDICT_HOST;
+            const mlApiResponse = await axios.post(apiUrl, { filename: file.originalname });
+            console.log('API Response:', mlApiResponse.data);
+            const predictionResult = mlApiResponse.data.label;
 
             console.log('File yang akan di-upload ke GCS:', gcsFileName);
 
