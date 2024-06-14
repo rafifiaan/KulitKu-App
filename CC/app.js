@@ -24,13 +24,11 @@ const crypto = require('crypto');
 const moment = require('moment');
 
 // keperluan route
-const userRouter = require('./src/users/users.router.js');
-const kulitRouter = require('./src/kulit/kulit.route.js');
-// const predictRouter = require('./src/predict/predict.route.js');
+const userRouter = require('./backend_api/users/users.router.js');
+const kulitRouter = require('./backend_api/kulit/kulit.route.js');
 
 app.use('/', userRouter);
 app.use('/', kulitRouter);
-// app.use('/', predictRouter);
 
 app.use(express.json());
 app.use(bodyParser.json());
