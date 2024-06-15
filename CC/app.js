@@ -2,6 +2,9 @@
 const express = require('express');
 const app = express();
 
+// Keperluan call ML-API menggunakan axios
+const axios = require('axios');
+
 // keperluan environment variable
 require('dotenv').config();
 const port = process.env.PORT || 3000;
@@ -24,7 +27,7 @@ const crypto = require('crypto');
 const moment = require('moment');
 
 // keperluan route
-const userRouter = require('./backend_api/users/users.router.js');
+const userRouter = require('./backend_api/users/users.route.js');
 const kulitRouter = require('./backend_api/kulit/kulit.route.js');
 
 app.use('/', userRouter);
@@ -74,18 +77,18 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
             const apiUrl = process.env.API_PREDICT_HOST;
             const mlApiResponse = await axios.post(apiUrl, { filename: file.originalname });
             console.log('API Response:', mlApiResponse.data);
-            const predictionResult = mlApiResponse.data.label;
+            const predictionResult = mlApiResponse.data.label; // predictionResult menyimpan nama penyakit hasil prediksi API ML
 
             console.log('File yang akan di-upload ke GCS:', gcsFileName);
 
             // mempersiapkan data yang akan diisikan ke database
             const id_scan = crypto.randomBytes(8).toString('hex');
             const waktu_scan = moment().format('HH:mm:ss');
-            const tanggal_scan = moment().format('DD-MM-YYYY');
+            const tanggal_scan = moment().format('YYYY-MM-DD');
             const gambar_scan_url = `https://storage.googleapis.com/${bucket.name}/${gcsFileName}`;
-            // const id_penyakit_dugaan <hasil dari resp>
-            // const persentase
-            // const user_yang_scan
+            const id_penyakit_dugaan = mlApiResponse.data.data.id_penyakit;
+            const persentase = parseFloat(mlApiResponse.data.confidence.toFixed(2));
+            const user_yang_scan = 1; // on_prog
 
             // console.log(gambar_scan_url);
 
@@ -97,13 +100,22 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
                 }
 
                 if (results.affectedRows > 0) {
-                    return res.status(200).json({
-                        error: false,
-                        message: 'Data berhasil disimpan ke database'
-                    });
-                } 
-                console.log('Data berhasil disimpan ke database');
+                    console.log('Data berhasil disimpan ke database');
+                }
             });
+
+            const responseToClient = {
+                data: {
+                    nama_penyakit: predictionResult,
+                    gambar: gambar_scan_url,
+                    persentase: persentase,
+                    definisi_penyakit: mlApiResponse.data.data.definisi_penyakit,
+                    penyebab: mlApiResponse.data.data.penyebab_penyakit,
+                    gejala_penyakit: mlApiResponse.data.data.gejala_penyakit,
+                    sinyal_ke_dokter: mlApiResponse.data.data.sinyal_ke_dokter,
+                },
+            };
+            res.status(200).json(responseToClient);
 
             console.log('File berhasil disimpan ke GCS');
             // res.status(200).json({ message: 'File berhasil di-upload ke GCS dan data scan disimpan ke database' });
