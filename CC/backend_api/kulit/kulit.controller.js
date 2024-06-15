@@ -1,10 +1,34 @@
 const { 
     getFaktaById,
     getAllArtikel,
-    getArtikelById
+    getArtikelById,
+    getPenyakitById
 } = require("./kulit.service");
 
 module.exports = {
+    getPenyakitById: (req, res) => {
+        const id_penyakit = req.params.id_penyakit;
+        getPenyakitById(id_penyakit, (err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({
+                    error: true,
+                    message: 'Kesalahan server internal'
+                });
+            }
+            if (!results) {
+                return res.status(404).json({
+                    error: true,
+                    message: 'Penyakit tidak ditemukan'
+                });
+            }
+            return res.status(200).json({
+                error: false,
+                message: 'Penyakit berhasil ditemukan!',
+                dataPenyakit: results
+            });
+        });
+    },
     getAllArtikel: (req, res) => {
         getAllArtikel((err, results) => {
             if (err) {

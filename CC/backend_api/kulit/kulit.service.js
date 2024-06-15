@@ -41,8 +41,22 @@ const getArtikelById = (id_artikel, callback) => {
     );
 }
 
+const getPenyakitById = (id_penyakit, callback) => {
+    pool.query(
+        'SELECT * FROM penyakit WHERE id_penyakit = ?',
+        [id_penyakit],
+        (error, results, fields) => {
+            if (error) {
+                return callback(error, null);
+            }
+            return callback(null, results[0]);
+        }
+    );
+}
+
 module.exports = {
     getFaktaById,
     getAllArtikel,
-    getArtikelById
+    getArtikelById,
+    getPenyakitById
 };

@@ -5,7 +5,7 @@ const {
     updateUser, 
     deleteUser,
     login 
-} = require('../users/users.controller.js');
+} = require('./users.controller.js');
 
 const router = require('express').Router();
 // const { checkToken } = require('../../middleware/authentication');
