@@ -1,0 +1,9 @@
+Flask
+gunicorn
+google-cloud-storage
+pillow
+numpy
+tensorflow==2.13.0
+keras==2.13.1
+Flask-SQLAlchemy
+mysql-connector-python
