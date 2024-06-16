@@ -1,2 +1,4 @@
-node_modules
-env
+./CC/backend-services/kulitku-product-credentials.json
+./CC/ml-services/kulitku-product-credentials.json
+./CC/backend-services/.env
+./CC/backend-services/node_modules

@@ -7,7 +7,7 @@ const axios = require('axios');
 
 // keperluan environment variable
 require('dotenv').config();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const bodyParser = require('body-parser');
 
 // keperluan upload file ke GCS
