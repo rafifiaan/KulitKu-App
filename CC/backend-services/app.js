@@ -24,7 +24,7 @@ const pool = require("./config/databases.js");
 
 // keperluan pengisian data ke database
 const crypto = require('crypto');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 // keperluan route
 const userRouter = require('./backend_api/users/users.route.js');
@@ -83,8 +83,8 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
 
             // mempersiapkan data yang akan diisikan ke database
             const id_scan = crypto.randomBytes(8).toString('hex');
-            const waktu_scan = moment().format('HH:mm:ss');
-            const tanggal_scan = moment().format('YYYY-MM-DD');
+            const waktu_scan = moment().tz('Asia/Jakarta').format('HH:mm:ss');
+            const tanggal_scan = moment().tz('Asia/Jakarta').format('YYYY-MM-DD');
             const gambar_scan_url = `https://storage.googleapis.com/${bucket.name}/${gcsFileName}`;
             const id_penyakit_dugaan = mlApiResponse.data.data.id_penyakit;
             const persentase = parseFloat(mlApiResponse.data.confidence.toFixed(2));
