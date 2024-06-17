@@ -24,12 +24,11 @@ Cloud Computing team is responsible for creating and providing several API codes
 **Endpoints :**
 - /login  = login user
 - /register = register user
-- /home = get several data for home page
-- /history = get all the history data from the scan results
-- /history/:id = get all scanned history data based on ID
+- /home = get several data for home page (fact, list history, article)
+- /history/:user_yang_scan = get all scanned history data based on ID
 - /artikel = get all artikel data
-- /artikel/:id = get detailed article specific data by id
-- /upload/ = [POST] upload image -> store to gcs bucket -> predict data -> get data
+- /artikel/:id_artikel = get detailed article specific data by id
+- /upload = [POST] upload image -> store to gcs bucket -> predict data -> get data
 
 **Service in GCP :**
 - Cloud Run = Deployment
