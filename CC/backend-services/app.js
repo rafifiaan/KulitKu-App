@@ -43,6 +43,11 @@ app.use('/', kulitRouter);
 // fitur upload ke GCS dan penyimpanan ke database
 app.post('/upload', checkToken, tempGCS.single('file'), (req, res) => {
     try {
+        console.log('User dari token:', req.user); // Log untuk memastikan req.user terdefinisi
+
+        if (!req.user || !req.user.id_users) {
+            return res.status(401).json({ message: 'User tidak ditemukan atau tidak valid' });
+        }
 
         // log penerimaan file
         console.log('File yang diterima:', req.file);
