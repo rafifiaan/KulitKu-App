@@ -2,7 +2,8 @@ const {
     getFaktaById,
     getAllArtikel,
     getArtikelById,
-    getPenyakitById
+    getPenyakitById,
+    getHistoryByUser
 } = require("./kulit.service");
 
 module.exports = {
@@ -29,6 +30,7 @@ module.exports = {
             });
         });
     },
+
     getAllArtikel: (req, res) => {
         getAllArtikel((err, results) => {
             if (err) {
@@ -68,11 +70,36 @@ module.exports = {
                 dataArtikel: results
             });
         });
-    },    
+    },
+    
+    getUserScanHistory: (req, res) => {
+        const user_yang_scan = req.params.user_yang_scan;
+        getHistoryByUser(user_yang_scan, (err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({
+                    error: true,
+                    message: 'Kesalahan server internal'
+                });
+            }
+            if (!results.length) {
+                return res.status(404).json({
+                    error: true,
+                    message: 'Riwayat scan tidak ditemukan'
+                });
+            }
+            return res.status(200).json({
+                error: false,
+                message: 'Riwayat scan berhasil ditemukan!',
+                history: results
+            });
+        });
+    },
 
     getHomeData: (req, res) => {
-        let beritaArtikel, randomFakta;
+        let beritaArtikel, randomFakta, userScanHistory;
         let errors = [];
+        const user_yang_scan = req.params.user_yang_scan; // Assuming user ID is passed as a parameter
 
         const sendResponse = () => {
             if (errors.length > 0) {
@@ -81,13 +108,14 @@ module.exports = {
                     message: 'Kesalahan server internal'
                 });
             }
-            if (beritaArtikel && randomFakta) {
+            if (beritaArtikel && randomFakta && userScanHistory) {
                 return res.status(200).json({
                     error: false,
                     message: 'Selamat! Data Home berhasil dimuat',
                     data: {
                         fakta: randomFakta,
-                        artikel: beritaArtikel
+                        artikel: beritaArtikel,
+                        history: userScanHistory
                     }
                 });
             }
@@ -116,6 +144,18 @@ module.exports = {
                 sendResponse();
             } else {
                 randomFakta = faktaResult;
+                sendResponse();
+            }
+        });
+
+        // Mengambil riwayat scan user
+        getHistoryByUser(user_yang_scan, (err, historyResult) => {
+            if (err) {
+                console.error("Kesalahan:", err);
+                errors.push(err);
+                sendResponse();
+            } else {
+                userScanHistory = historyResult;
                 sendResponse();
             }
         });

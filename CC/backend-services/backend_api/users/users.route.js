@@ -8,10 +8,10 @@ const {
 } = require('./users.controller.js');
 
 const router = require('express').Router();
-// const { checkToken } = require('../../middleware/authentication');
+const { checkToken } = require('../../middleware/authentication');
 
-router.get('/users', getUsers);
-router.get('/users/:id_users', getUserById);
+router.get('/users', checkToken, getUsers);
+router.get('/users/:id_users', checkToken, getUserById);
 router.post('/register', createUser);
 router.post('/login', login);
 

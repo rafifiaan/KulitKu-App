@@ -54,9 +54,24 @@ const getPenyakitById = (id_penyakit, callback) => {
     );
 }
 
+const getHistoryByUser = (user_yang_scan, callback) => {
+    pool.query(
+        'SELECT * FROM scan_keluhan WHERE user_yang_scan = ?',
+        [user_yang_scan],
+        (error, results, fields) => {
+            if (error) {
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
+}
+
+
 module.exports = {
     getFaktaById,
     getAllArtikel,
     getArtikelById,
-    getPenyakitById
+    getPenyakitById,
+    getHistoryByUser
 };

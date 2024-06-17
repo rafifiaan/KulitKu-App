@@ -30,15 +30,18 @@ const moment = require('moment-timezone');
 const userRouter = require('./backend_api/users/users.route.js');
 const kulitRouter = require('./backend_api/kulit/kulit.route.js');
 
-app.use('/', userRouter);
-app.use('/', kulitRouter);
+const { checkToken } = require('./middleware/authentication.js');
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use('/', userRouter);
+app.use('/', kulitRouter);
 
 
 // fitur upload ke GCS dan penyimpanan ke database
-app.post('/upload', tempGCS.single('file'), (req, res) => {
+app.post('/upload', checkToken, tempGCS.single('file'), (req, res) => {
     try {
 
         // log penerimaan file
@@ -88,7 +91,7 @@ app.post('/upload', tempGCS.single('file'), (req, res) => {
             const gambar_scan_url = `https://storage.googleapis.com/${bucket.name}/${gcsFileName}`;
             const id_penyakit_dugaan = mlApiResponse.data.data.id_penyakit;
             const persentase = parseFloat(mlApiResponse.data.confidence.toFixed(2));
-            const user_yang_scan = 1; // on_prog
+            const user_yang_scan = req.user.id_users; // Mengambil id_users dari token JWT
 
             // console.log(gambar_scan_url);
 
@@ -135,4 +138,4 @@ app.get('/' , (req , res)=>{
  
 app.listen(port , ()=> {
     console.log('> Yeay! Server aktif dan berjalan pada port: ' + port);
-})
+});

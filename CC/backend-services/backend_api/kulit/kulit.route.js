@@ -2,15 +2,19 @@ const {
     getHomeData,
     getAllArtikel,
     getArtikelById,
-    getPenyakitById
+    getPenyakitById,
+    getUserScanHistory
 } = require("./kulit.controller");
 
 const router = require("express").Router();
+const { checkToken } = require('../../middleware/authentication.js');
 
-router.get("/home", getHomeData);
-router.get("/artikel", getAllArtikel);
-router.get("/artikel/:id_artikel", getArtikelById);
+router.get("/home", checkToken, getHomeData);
+router.get("/artikel", checkToken, getAllArtikel);
+router.get("/artikel/:id_artikel", checkToken, getArtikelById);
 
-router.get("/penyakit/:id_penyakit", getPenyakitById);
+router.get("/penyakit/:id_penyakit", checkToken, getPenyakitById);
+
+router.get('/history/:user_yang_scan', getUserScanHistory);
 
 module.exports = router;
