@@ -1,3 +1,5 @@
+![Banner KulitKu](source-media/github-banner-kulitku.png)
+
 # KulitKu - Smart Application for Skin Disease Detection
 *We will be here immediately to ensure your skin condition!*
 
