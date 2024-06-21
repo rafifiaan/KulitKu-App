@@ -21,7 +21,6 @@ After that our python code will use the model that we loaded using tensorflow js
 
 For the all the code and stuff could be checked on the folder of this repository!
 
-![alt](ML/architecture.jpg
 
 <br>
 
