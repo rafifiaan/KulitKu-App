@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/daftar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DaftarActivity"
+    android:background="@color/secondaryColor">
+
+    <TextView
+        android:id="@+id/at_text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/poppinsbold"
+        android:text="Artikel Terkait"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="80dp"/>
+
+    <Button
+        android:id="@+id/at_btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="47dp"
+        android:background="@drawable/arrow_back"/>
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/foto"
+        android:id="@+id/at_frame1">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/at_deskripsi1"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hs_btn1"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/deskripsi"
+        android:fontFamily="@font/poppinsregular"
+        android:hint="Deskripsi"
+        android:paddingLeft="20dp"
+        android:paddingBottom="70dp" />
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/foto"
+        android:layout_below="@id/at_frame1"
+        android:id="@+id/at_frame2">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/at_deskripsi2"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/at_deskripsi1"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/deskripsi"
+        android:fontFamily="@font/poppinsregular"
+        android:hint="Deskripsi"
+        android:paddingLeft="20dp"
+        android:paddingBottom="70dp" />
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/foto"
+        android:layout_below="@id/at_frame2"
+        android:id="@+id/at_frame3">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/at_deskripsi3"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/at_deskripsi2"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/deskripsi"
+        android:fontFamily="@font/poppinsregular"
+        android:hint="Deskripsi"
+        android:paddingLeft="20dp"
+        android:paddingBottom="70dp" />
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/foto"
+        android:layout_below="@id/at_frame3"
+        android:id="@+id/at_frame4">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/at_deskripsi4"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/at_deskripsi3"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/deskripsi"
+        android:fontFamily="@font/poppinsregular"
+        android:hint="Deskripsi"
+        android:paddingLeft="20dp"
+        android:paddingBottom="70dp" />
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/foto"
+        android:layout_below="@id/at_frame4"
+        android:id="@+id/at_frame5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/at_deskripsi5"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/at_deskripsi4"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/deskripsi"
+        android:fontFamily="@font/poppinsregular"
+        android:hint="Deskripsi"
+        android:paddingLeft="20dp"
+        android:paddingBottom="70dp" />
+
+</RelativeLayout>
