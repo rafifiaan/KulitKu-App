@@ -19,5 +19,8 @@ We use MobileNetV3 for the transfer learning model by adding new layer on top of
 For the deployment code, we use flask for the web framework. The flow is for the backend service to send a google cloud bucket link of an images that want to be predicted.
 After that our python code will use the model that we loaded using tensorflow js and then it will predict the disease based on the image.
 
+For the all the code and stuff could be checked on the folder of this repository!
+
+
 <br>
 
