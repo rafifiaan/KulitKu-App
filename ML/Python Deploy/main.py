@@ -6,18 +6,17 @@ import numpy as np
 from tensorflow.keras.applications.mobilenet_v3 import preprocess_input
 from io import BytesIO
 from flask_sqlalchemy import SQLAlchemy
+from google.cloud import storage    
 
 app = Flask(__name__, static_url_path='', static_folder='static')
 
 # Load your .h5 model
 model = load_model('best_model.h5', compile=False)
 
-skin_disease = ["Acne", "Basal Cell Carcinoma", "Chicken Pox", "Eksim", "Melanoctyic Nevi",
-"Melanoma", "Normal Skin", "Psoriasis", "Ringworm", "Scabies", "Seborrheic Keratosis",
-"Shingles", "Urticaria Hives", "Warts Molluscum"]
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'kulitku-product-credentials.json'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:skin123@/dbkulit?unix_socket=/cloudsql/kulitku-product:asia-southeast2:kulitku-project'
+storage_client = storage.Client()
 
-# Connect to databse
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root@localhost:3306/dbkulit'
 db = SQLAlchemy(app)
 
 
@@ -32,19 +31,17 @@ class Penyakit(db.Model):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
+     if request.method == 'POST':
         try:
-            file = request.files['file']
-            if file and file.filename != '':
-                img_path = BytesIO(file.read())
-            else:
-                respond = jsonify({'message': 'No file uploaded'})
-                respond.status_code = 400
-                return respond
+            image_bucket = storage_client.get_bucket('kulitku-bucket')
+            filename = request.json['filename']
+            img_blob = image_bucket.blob('upload/' + filename)
+            img_path = BytesIO(img_blob.download_as_bytes())
         except Exception:
             respond = jsonify({'message': 'Error loading image file'})
             respond.status_code = 400
             return respond
+        
 
         img = tf.keras.utils.load_img(img_path, target_size=(224, 224))
         x = tf.keras.utils.img_to_array(img)
@@ -58,7 +55,7 @@ def index():
         predicted_label_index = np.argmax(pred_disease)
 
         # Print or log prediction information
-        print(f"Prediction: {predicted_label_index}")
+        # print(f"Prediction: {predicted_label_index}")
 
         # Check if the prediction is above a certain threshold
         threshold = 0.2
@@ -70,9 +67,8 @@ def index():
         # Prepare the response with prediction information
         penyakit_data = Penyakit.query.order_by(Penyakit.id_penyakit).offset(predicted_label_index).first()
         result = {
-            "predicted_label_index": int(predicted_label_index),
+            "predicted_label_index": int(predicted_label_index)+1,
             "confidence": float(pred_disease[0][predicted_label_index]),
-            "disease": str(skin_disease[predicted_label_index]),
             "data": {
                     "id_penyakit": penyakit_data.id_penyakit,
                     "gambar_penyakit": penyakit_data.gambar_penyakit,
