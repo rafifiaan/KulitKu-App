@@ -67,8 +67,8 @@ Some of the features we've introduced so far include:
 
 [FREE] For your first experience with the application, please click the Google Drive link below to download the application:
 
-[ -- Link KulitKu App -- ]
-<!-- ![KulitKu App](Under Development) -->
+[ -- Link KulitKu Web App -- ]
+![KulitKu App](https://kulitku-web-x65wwhlr6a-et.a.run.app)
 
 </br>
 
